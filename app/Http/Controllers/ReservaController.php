@@ -12,7 +12,8 @@ class ReservaController extends Controller
      */
     public function index()
     {
-        return view('reservas.index');
+        $data['reservas'] = Reserva::All();
+        return view('reservas.index', $data );
     }
 
     /**
@@ -20,7 +21,7 @@ class ReservaController extends Controller
      */
     public function create()
     {
-        //
+        return view('reservas.create');
     }
 
     /**
@@ -29,12 +30,15 @@ class ReservaController extends Controller
     public function store(Request $request)
     {
         //
+        $reservaData = request()->except('_token');
+        Reserva::insert($reservaData);
+        return redirect()->route('reservas.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Reserva $reserva)
+    public function show(string $reserva)
     {
         //
     }
@@ -42,24 +46,31 @@ class ReservaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Reserva $reserva)
+    public function edit(string $reserva)
     {
         //
+        $reserva = Reserva::findOrFail($reserva);
+        return view('reservas.edit', compact('reserva'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Reserva $reserva)
+    public function update(Request $request, string $reserva)
     {
         //
+        $reservaData = request()->except('_token', '_method');
+        Reserva::where('id', '=', $reserva)->update($reservaData);
+        return redirect('reservas');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Reserva $reserva)
+    public function destroy(string $reserva)
     {
         //
+        Reserva::destroy($reserva);
+        return redirect('reservas');
     }
 }
