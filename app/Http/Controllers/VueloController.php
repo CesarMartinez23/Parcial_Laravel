@@ -23,6 +23,7 @@ class VueloController extends Controller
     public function create()
     {
         //
+        return view('vuelos.create');
     }
 
     /**
@@ -31,12 +32,15 @@ class VueloController extends Controller
     public function store(Request $request)
     {
         //
+        $vueloData = request()->except('_token');
+        Vuelo::insert($vueloData);
+        return redirect()->route('vuelos.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Vuelo $vuelo)
+    public function show(string $vuelo)
     {
         //
     }
@@ -44,24 +48,31 @@ class VueloController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Vuelo $vuelo)
+    public function edit(string $id)
     {
         //
+        $vuelo = Vuelo::findOrFail($id);
+        return view('vuelos.edit', compact('vuelo'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Vuelo $vuelo)
+    public function update(Request $request, string $id)
     {
         //
+        $vueloData = request()->except('_token', '_method');
+        Vuelo::where('id', '=', $id)->update($vueloData);
+        return redirect('vuelos');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Vuelo $vuelo)
+    public function destroy(string $id)
     {
         //
+        Vuelo::destroy($id);
+        return redirect('vuelos');
     }
 }

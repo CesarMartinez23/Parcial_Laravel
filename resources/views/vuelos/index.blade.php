@@ -1,43 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <title>Home</title>
-</head>
-<body>
-    <h1>Vuelos</h1>
+<h1>Listado de Vuelos</h1>
+<a href="{{ url('vuelos/create') }}">Nuevo Registro</a>
 
-    <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td colspan="2">Larry the Bird</td>
-            <td>@twitter</td>
-          </tr>
-        </tbody>
-      </table>
-</body>
-</html>
+<table>
+    <thead>
+        <th>#</th>
+        <th>Origen</th>
+        <th>Destino</th>
+        <th>Fecha Salida</th>
+        <th>Acciones</th>
+    </thead>
+    <tbody>
+        @foreach($vuelos as $vuelo)
+            <tr>
+                <td>{{ $vuelo->Numero_Vuelo }}</td>
+                <td>{{ $vuelo->Origen }}</td>
+                <td>{{ $vuelo->Destino }}</td>
+                <td>{{ $vuelo->Fecha_Salida }}</td>
+
+                <form action="{{ url('/vuelos/'.$vuelo->id) }}" method="POST">
+                    @csrf
+                    {{ method_field('DELETE') }} 
+                    <td>
+                        <a href="{{ route('vuelos.edit', $vuelo->id) }}">Edit</a>
+                        <input type="submit" value="Delete" onclick="return confirm('Desea eliminar el registro ?')">
+                    </td>
+                </form>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
